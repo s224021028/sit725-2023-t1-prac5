@@ -8,7 +8,7 @@ router.get("/", (req, res) => {
 })
 
 router.get("/results", (req, res) => {
-    controllers.expressionsController.getExpression(req, res)
+    controllers.expressionsController.getAllExpressions(req, res)
 })
 
 router.get("/delete", (req, res) => {

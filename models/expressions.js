@@ -18,7 +18,7 @@ catch (exception)
     console.error(exception);
 }
 
-async function getExpression()
+async function getAllExpressions()
 {
     try 
     {
@@ -48,4 +48,4 @@ function postExpression(operation, numA, numB, ans, callback)
     data.insertOne(expression, callback)
 }
 
-module.exports = {getExpression, postExpression, deleteAllExpressions}
+module.exports = {getAllExpressions, postExpression, deleteAllExpressions}
