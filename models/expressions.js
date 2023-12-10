@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion } = require("mongodb");
 const url = "mongodb://localhost:27017/operations";
 const client = new MongoClient(url, {
     serverApi: {
@@ -7,45 +7,20 @@ const client = new MongoClient(url, {
         deprecationErrors: true,
     }
 })
-let data;
-try
-{
-    client.connect();
-    data = client.db().collection("Expressions");
-}
-catch (exception)
-{
-    console.error(exception);
-}
 
-async function getAllExpressions()
-{
-    try 
-    {
-        return await data.find({}).toArray()
-    }
-    catch(error) 
-    {
-        console.error(error);
-    }
-}
-
-async function deleteAllExpressions()
+function getDatabase()
 {
     try
     {
-        return await data.deleteMany({})
+        client.connect();
+        let data = client.db().collection("Expressions");
+        console.log("database connected")
+        return data
     }
-    catch(error)
+    catch (exception)
     {
-        console.error(error)
+        console.error(exception);
     }
 }
 
-function postExpression(operation, numA, numB, ans, callback)
-{
-    var expression = {operator: operation, numberA: numA, numberB: numB, result: ans}
-    data.insertOne(expression, callback)
-}
-
-module.exports = {getAllExpressions, postExpression, deleteAllExpressions}
+module.exports = {getDatabase}

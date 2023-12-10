@@ -4,7 +4,7 @@ const router = express.Router()
 const controllers = require("../controllers")
 
 router.get("/", (req, res) => {
-    controllers.expressionsController.showHomeView(req, res)
+    controllers.expressionsController.homeView(req, res)
 })
 
 router.get("/results", (req, res) => {

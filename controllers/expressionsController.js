@@ -1,20 +1,36 @@
 const services = require("../services")
 
-function showHomeView(res)
+function homeView(res)
 {
-    res.sendFile("index.html");
+    res.render("index.html");
 }
 
 async function getAllExpressions(req, res)
 {
-    var result = await services.expressionsService.getAllExpressions()
-    res.json({data: result})
+    try
+    {
+        var result = await services.expressionsService.getAllExpressions()
+        console.log("get data success")
+        res.json({data: result})
+    }
+    catch (err)
+    {
+        console.error(err)
+    }
 }
 
 async function deleteAllExpressions(req, res)
 {
-    var result = await services.expressionsService.deleteAllExpressions()
-    res.json({data: result})
+    try
+    {
+        var result = await services.expressionsService.deleteAllExpressions()
+        console.log("delete data success")
+        res.json({data: result})
+    }
+    catch (err)
+    {
+        console.error(err)
+    }
 }
 
 function postExpression(req, res)
@@ -23,7 +39,8 @@ function postExpression(req, res)
     var numA = parseFloat(req.body.numA)
     var numB = parseFloat(req.body.numB)
     var showDecimal = req.body.showDecimal
-    services.expressionsService.postExpression(operation, numA, numB, showDecimal, (err, result) => {
+    var ans = calculate(operation, numA, numB, showDecimal)
+    services.expressionsService.postExpression(operation, numA, numB, ans, (err, result) => {
         if(err)
             console.error(err)
         else
@@ -31,4 +48,37 @@ function postExpression(req, res)
     })
 }
 
-module.exports = {getAllExpressions, postExpression, deleteAllExpressions, showHomeView}
+function calculate(operation, numA, numB, showDecimal)
+{
+    var ans = 0
+    if (operation == "add")
+    {
+        ans = numA + numB
+    }
+    else if (operation == "sub")
+    {
+        ans = numA - numB
+    }
+    else if (operation == "mul")
+    {
+        ans = numA * numB
+    }
+    else if (operation == "div")
+    {
+        ans = numA / numB
+    }
+    else if (operation == "mod")
+    {
+        ans = numA % numB
+    }
+    else if (operation == "pow")
+    {
+        ans = numA ** numB
+    }
+    if (showDecimal == "true")
+        return ans
+    else
+        return Math.round(ans)
+}
+
+module.exports = {getAllExpressions, postExpression, deleteAllExpressions, homeView}

@@ -1,52 +1,35 @@
 const models = require("../models")
 
+let data = models.expressionsModel.getDatabase()
+
 async function getAllExpressions()
 {
-    return await models.expressionsModel.getAllExpressions()
+    try 
+    {
+        return await data.find({}).toArray()
+    }
+    catch (error) 
+    {
+        console.error(error);
+    }
 }
 
 async function deleteAllExpressions()
 {
-    return await models.expressionsModel.deleteAllExpressions()
+    try
+    {
+        return await data.deleteMany({})
+    }
+    catch (error)
+    {
+        console.error(error)
+    }
 }
 
-function postExpression(operation, numA, numB, showDecimal, callback)
+function postExpression(operation, numA, numB, ans, callback)
 {
-    var ans = calculate(operation, numA, numB, showDecimal)
-    models.expressionsModel.postExpression(operation, numA, numB, ans, callback)
-}
-
-function calculate(operation, numA, numB, showDecimal)
-{
-    var ans = 0
-    if (operation == "add")
-    {
-        ans = numA + numB
-    }
-    else if (operation == "sub")
-    {
-        ans = numA - numB
-    }
-    else if (operation == "mul")
-    {
-        ans = numA * numB
-    }
-    else if (operation == "div")
-    {
-        ans = numA / numB
-    }
-    else if (operation == "mod")
-    {
-        ans = numA % numB
-    }
-    else if (operation == "pow")
-    {
-        ans = numA ** numB
-    }
-    if (showDecimal == "true")
-        return ans
-    else
-        return Math.round(ans)
+    var expression = {operator: operation, numberA: numA, numberB: numB, result: ans}
+    data.insertOne(expression, callback)
 }
 
 module.exports = {getAllExpressions, postExpression, deleteAllExpressions}

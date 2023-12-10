@@ -5,14 +5,12 @@ function changeColor() {
     const footer = document.getElementById("foot")
     if (i >= color_palette.length - 1)
     {
-        //console.log(i)
         navbar.classList.replace(color_palette[i], color_palette[i % (color_palette.length - 1)])
         footer.classList.replace(color_palette[i], color_palette[i % (color_palette.length - 1)])
         i = 0
     }
     else
     {
-        //console.log(i)
         navbar.classList.replace(color_palette[i], color_palette[i % color_palette.length + 1])
         footer.classList.replace(color_palette[i], color_palette[i % color_palette.length + 1])
         i++
@@ -56,7 +54,7 @@ function openHistory()
 function getHistory()
 {
     $.get("/results", (res) => {
-        console.log(res.data)
+        console.log("get history success")
         updateHistory(res.data)
     })
 }
@@ -64,7 +62,7 @@ function getHistory()
 function deleteHistory()
 {
     $.get("/delete", (res) => {
-        console.log(res.data)
+        console.log("delete history success")
         updateHistory(res.data)
     })
 }
@@ -96,9 +94,9 @@ function getFormData()
     formData.numA = document.getElementById("num1").value
     formData.numB = document.getElementById("num2").value
     var operationRadios = document.getElementsByName("operation")
-    for(var i = 0; i < operationRadios.length; i++)
+    for (var i = 0; i < operationRadios.length; i++)
     {
-        if(operationRadios[i].checked)
+        if (operationRadios[i].checked)
         {
             formData.operation = operationRadios[i].value
             break
@@ -110,18 +108,15 @@ function getFormData()
 
 function postData(formData)
 {
-    $.post("/results", formData, (res, status) => {
-        console.log(status)
+    $.post("/results", formData, (res) => {
+        console.log(res)
     })
 }
 
 $(function() {
     $("#form").on("submit", () => {
-        if(!isEmptyInput)
+        if (!isEmptyInput)
             getFormData()
-    })
-    $("#delete_history").on("click", () => {
-        deleteHistory()
     })
     getHistory()
 })
